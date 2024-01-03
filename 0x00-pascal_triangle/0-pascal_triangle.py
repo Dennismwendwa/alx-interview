@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""This module contains pascal triangle"""
+
 
 def pascal_triangle(n):
     """This function prints the pascal triangle"""
