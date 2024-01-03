@@ -1,0 +1,1 @@
+Pascar triangle
