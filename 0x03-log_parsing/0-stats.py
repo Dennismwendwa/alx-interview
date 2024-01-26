@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Log parsing"""
+"""Printing status"""
 import sys
 
 
@@ -25,8 +25,9 @@ try:
             for key, value in sorted(cache.items()):
                 if value != 0:
                     print('{}: {}'.format(key, value))
-except Exception as err:
+except Exception:
     pass
+
 finally:
     print('File size: {}'.format(total_size))
     for key, value in sorted(cache.items()):
