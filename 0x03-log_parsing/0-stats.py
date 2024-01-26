@@ -1,58 +1,34 @@
 #!/usr/bin/python3
-"""This script reads the stdin line by line"""
+"""Log parsing"""
 import sys
-import signal
-import re
 
+
+cache = {'200': 0, '301': 0, '400': 0, '401': 0,
+         '403': 0, '404': 0, '405': 0, '500': 0}
 
 total_size = 0
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 401: 0,
-                403: 0, 404: 0, 405: 0, 500: 0}
-lines_processed = 0
-interval_stats = {}
-
-
-def print_statistics(stats):
-    """This function reads the stats"""
-    global total_size
-    print(f"File size: {total_size}")
-    for code in sorted(stats):
-        count = status_codes[code]
-        if count > 0:
-            print(f"{code}: {count}")
-
-
-def signal_handler(signal, frame):
-    """This method prints after keybord intrupt signal"""
-    print_statistics(interval_stats)
-    sys.exit(0)
-
-
-signal.signal(signal.SIGINT, signal_handler)
+counter = 0
 
 try:
     for line in sys.stdin:
-        pattern = (
-            r'^(\d+\.\d+\.\d+\.\d+) - \[([^\]]+)\] '
-            r'"GET /projects/260 HTTP/1.1" (\d+) (\d+)$'
-            )
-        matchh = re.match(pattern, line.strip())
-        if matchh:
-            status_code = int(matchh.group(3))
-            file_size = int(matchh.group(4))
-
-            total_size += file_size
-            status_codes[status_code] += 1
-            interval_stats[status_code] = (
-                interval_stats.get(status_code, 0) + 1
-                )
-            lines_processed += 1
-
-            if lines_processed % 10 == 0:
-                print_statistics(interval_stats)
-                interval_stats = {}
-
-except KeyboardInterrupt:
-    print_statistics(status_codes)
-    print_statistics(interval_stats)
-    sys.exit(0)
+        line_list = line.split(" ")
+        if len(line_list) > 4:
+            code = line_list[-2]
+            size = int(line_list[-1])
+            if code in cache.keys():
+                cache[code] += 1
+            total_size += size
+            counter += 1
+        if counter == 10:
+            counter = 0
+            print('File size: {}'.format(total_size))
+            for key, value in sorted(cache.items()):
+                if value != 0:
+                    print('{}: {}'.format(key, value))
+except Exception as err:
+    pass
+finally:
+    print('File size: {}'.format(total_size))
+    for key, value in sorted(cache.items()):
+        if value != 0:
+            print('{}: {}'.format(key, value))
