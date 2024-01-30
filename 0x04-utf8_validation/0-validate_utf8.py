@@ -27,7 +27,11 @@ Four-byte character (4 bytes)
 
 
 def validUTF8(data):
-    """This checking if this is valid UTF8 encoded data"""
+    """
+    This checking if this is valid UTF8 encoded data
+    '>>' operator (right shift) shifts the bits of
+    the number by the given positions
+    """
     num_bytes = 0
 
     for num in data:
