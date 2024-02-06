@@ -6,11 +6,12 @@ import sys
 def is_safe(board, row, col, n):
     """Cheching if there any queen in the some column"""
     for k in range(row):
-        if board[k] == col or \
-            board[k] - k == col - row or \
-            board[k] + k == col + row:
-                return False
+        if (board[k] == col or
+                board[k] - k == col - row or
+                board[k] + k == col + row):
+            return False
     return True
+
 
 def solve_nqueens_util(board, row, n, solutions, memo):
     """checking all cells """
@@ -25,6 +26,7 @@ def solve_nqueens_util(board, row, n, solutions, memo):
             solve_nqueens_util(board, row + 1, n, solutions, memo)
             memo[row][col] = False
 
+
 def solve_nqueens(n):
     """This function start the game"""
     if n < 4:
@@ -34,9 +36,7 @@ def solve_nqueens(n):
     board = [-1] * n
     solutions = []
     memo = [[False] * n for _ in range(n)]
-    for l in memo:
-        print(l)
-    print()
+
     solve_nqueens_util(board, 0, n, solutions, memo)
 
     for solution in solutions:
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-        
+
     try:
         N = int(sys.argv[1])
     except ValueError:
