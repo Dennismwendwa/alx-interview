@@ -12,15 +12,18 @@ def is_safe(board, row, col, n):
                 return False
     return True
 
-def solve_nqueens_util(board, row, n, solutions):
+def solve_nqueens_util(board, row, n, solutions, memo):
     """checking all cells """
     if row == n:
         solutions.append([[k, board[k]] for k in range(n)])
-    else:
-        for col in range(n):
-            if is_safe(board, row, col, n):
-                board[row] = col
-                solve_nqueens_util(board, row + 1, n, solutions)
+        return
+
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row] = col
+            memo[row][col] = True
+            solve_nqueens_util(board, row + 1, n, solutions, memo)
+            memo[row][col] = False
 
 def solve_nqueens(n):
     """This function start the game"""
@@ -30,10 +33,12 @@ def solve_nqueens(n):
 
     board = [-1] * n
     solutions = []
-    
-    solve_nqueens_util(board, 0, n, solutions)
-    print(len(solutions))
+    memo = [[False] * n for _ in range(n)]
+    for l in memo:
+        print(l)
     print()
+    solve_nqueens_util(board, 0, n, solutions, memo)
+
     for solution in solutions:
         print(solution)
 
