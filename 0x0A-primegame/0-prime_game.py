@@ -1,4 +1,6 @@
+#!/usr/bin/python3
 """This script solves a game"""
+
 
 def isWinner(x, nums):
     """This is the gamfunction"""

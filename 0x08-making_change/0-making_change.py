@@ -25,4 +25,4 @@ def makeChange(coins, total):
 
     return sum(coin_count)
 
-# int(makeChange([1, 2, 25], 37))
+print(int(makeChange([14, 13, 12, 4], 30)))
